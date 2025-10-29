@@ -1,63 +1,206 @@
-/* CSS Variables for Theme Management */
+/* CSS Variables for Theme Management + Game Theme */
 :root {
   /* Light theme colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --text-primary: #282c34;
-  --text-secondary: #61dafb;
-  --border-color: #e9ecef;
-  --button-bg: #007bff;
+  --bg-primary: #f9fafb;          /* background */
+  --bg-secondary: #ffffff;        /* surface */
+  --text-primary: #111827;        /* text */
+  --text-secondary: #64748b;      /* secondary */
+  --border-color: #e5e7eb;
+
+  /* Brand accents */
+  --primary: #3b82f6;   /* blue */
+  --success: #06b6d4;   /* cyan */
+  --secondary: #64748b; /* slate */
+
+  --button-bg: var(--primary);
   --button-text: #ffffff;
+
+  --square-size: 96px;
+  --square-radius: 14px;
+  --spacing: 16px;
 }
 
 [data-theme="dark"] {
   /* Dark theme colors */
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #282c34;
-  --text-primary: #ffffff;
-  --text-secondary: #61dafb;
-  --border-color: #404040;
-  --button-bg: #0056b3;
+  --bg-primary: #0f172a;
+  --bg-secondary: #111827;
+  --text-primary: #f9fafb;
+  --text-secondary: #cbd5e1;
+  --border-color: #1f2937;
+
+  --button-bg: #2563eb;
   --button-text: #ffffff;
 }
 
 .App {
-  text-align: center;
-  background-color: var(--bg-primary);
+  min-height: 100vh;
+  background: var(--bg-primary);
   color: var(--text-primary);
+}
+
+/* Layout */
+.game-container {
   min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  display: grid;
+  place-items: center;
+  position: relative;
+  padding: 24px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.game-card {
+  width: 100%;
+  max-width: 520px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow:
+    0 10px 15px -3px rgba(0,0,0,0.1),
+    0 4px 6px -2px rgba(0,0,0,0.05);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.game-title {
+  margin: 0 0 16px 0;
+  font-size: 28px;
+  letter-spacing: 0.3px;
+  text-align: center;
 }
 
-.App-header {
-  background-color: var(--bg-secondary);
-  min-height: 100vh;
+/* Grid */
+.ttt-grid {
+  display: grid;
+  grid-template-columns: repeat(3, var(--square-size));
+  grid-template-rows: repeat(3, var(--square-size));
+  gap: var(--spacing);
+  justify-content: center;
+  margin: 8px auto 16px;
+}
+
+.ttt-square {
+  width: var(--square-size);
+  height: var(--square-size);
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--square-radius);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.15s ease, border-color 0.2s ease, background-color 0.2s ease;
+  user-select: none;
+}
+
+[data-theme="dark"] .ttt-square {
+  background: linear-gradient(180deg, #0b1220, #0f172a);
+}
+
+.ttt-square:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+.ttt-square:active {
+  transform: translateY(0);
+}
+
+.ttt-square--highlight {
+  border-color: var(--success);
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.25);
+  background: linear-gradient(180deg, #ecfeff, #e0f7fa);
+}
+[data-theme="dark"] .ttt-square--highlight {
+  background: linear-gradient(180deg, rgba(6, 182, 212, 0.15), rgba(6, 182, 212, 0.05));
+}
+
+/* Status + Controls */
+.game-info {
+  display: grid;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.status-badge {
+  width: 100%;
+  text-align: center;
+  padding: 10px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  border: 1px solid var(--border-color);
+}
+
+.status-badge--primary {
+  background: rgba(59, 130, 246, 0.08);
+  color: var(--primary);
+}
+
+.status-badge--success {
+  background: rgba(6, 182, 212, 0.1);
+  color: #0e7490;
+}
+
+.status-badge--secondary {
+  background: rgba(100, 116, 139, 0.08);
+  color: var(--secondary);
+}
+
+.controls {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: var(--button-bg);
+  color: var(--button-text);
+  box-shadow: 0 6px 14px rgba(59, 130, 246, 0.25);
+}
+.btn-primary:hover {
+  filter: brightness(1.02);
+  box-shadow: 0 8px 18px rgba(59, 130, 246, 0.3);
+}
+
+/* Legend */
+.legend {
+  margin-top: 8px;
+  display: flex;
+  gap: 16px;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: var(--text-primary);
-  transition: background-color 0.3s ease;
-  position: relative;
+  color: var(--secondary);
+  font-size: 13px;
 }
 
-.App-link {
-  color: var(--text-secondary);
-  transition: color 0.3s ease;
+.dot {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  border-radius: 999px;
+  margin: 0 6px 0 10px;
 }
+.dot--x { background: var(--primary); }
+.dot--o { background: var(--success); }
 
+/* Theme toggle from template */
 .theme-toggle {
   position: absolute;
   top: 20px;
@@ -65,40 +208,36 @@
   background-color: var(--button-bg);
   color: var(--button-text);
   border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 600;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.25);
 }
-
 .theme-toggle:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  opacity: 0.9;
+  box-shadow: 0 6px 14px rgba(59, 130, 246, 0.35);
 }
+.theme-toggle:active { transform: translateY(0); }
 
-.theme-toggle:active {
-  transform: translateY(0);
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Responsive design for mobile */
+/* Responsive */
 @media (max-width: 768px) {
+  :root {
+    --square-size: 86px;
+    --spacing: 14px;
+  }
   .theme-toggle {
-    top: 10px;
-    right: 10px;
-    padding: 8px 16px;
-    font-size: 12px;
+    top: 12px;
+    right: 12px;
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  :root {
+    --square-size: 78px;
+    --spacing: 12px;
   }
 }
